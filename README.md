@@ -265,42 +265,40 @@ revised text
 terminology audit
 ```
 
-## Installation Model
+## Installation
 
-本仓库地址：
+最简单的安装方式是直接用 `npx` 从 GitHub 安装，不需要先 clone 仓库。
 
-```bash
-export PAPER_WRITING_SKILLS_REPO="https://github.com/wanglixin-DLUT/paper-writing-skills.git"
-```
-
-如果你的 GitHub 账户已经配置 SSH key，也可以使用 SSH 地址：
-
-```bash
-export PAPER_WRITING_SKILLS_REPO="git@github.com:wanglixin-DLUT/paper-writing-skills.git"
-```
-
-### NPM / AgentSkill-Compatible Install
-
-本仓库同时兼容 `SKILL.md` open-standard 生态。`agentskill.sh` 和 `transskill` 这类 npm 工具都以 `skill-name/SKILL.md` 为核心格式；本仓库的 10 个 skill 目录已经按这个结构组织。
-
-注意：npm 上的 `openskill` 包不是 agent skill 框架，而是在线 skill ranking 算法库。本仓库选择兼容 `@agentskill.sh/cli` / `transskill` 这类实际面向 AI agent skills 的 npm 工具链。
-
-无需 clone，也可以用 GitHub + npx 直接安装：
+先确认能看到 10 个 skills：
 
 ```bash
 npx --yes github:wanglixin-DLUT/paper-writing-skills list
 ```
 
-安装到 Codex 全局 skill 目录：
+安装到 Codex 全局目录：
 
 ```bash
 npx --yes github:wanglixin-DLUT/paper-writing-skills install --platform codex --scope global
 ```
 
-安装到当前项目的 Claude Code skill 目录：
+安装到 Claude Code 全局目录：
 
 ```bash
+npx --yes github:wanglixin-DLUT/paper-writing-skills install --platform claude-code --scope global
+```
+
+安装到某个 Claude Code 项目：
+
+```bash
+cd /path/to/your-paper-project
 npx --yes github:wanglixin-DLUT/paper-writing-skills install --platform claude-code --scope project
+```
+
+安装到某个 Cursor 项目：
+
+```bash
+cd /path/to/your-paper-project
+npx --yes github:wanglixin-DLUT/paper-writing-skills install --platform cursor --scope project
 ```
 
 安装到自定义目录：
@@ -309,290 +307,11 @@ npx --yes github:wanglixin-DLUT/paper-writing-skills install --platform claude-c
 npx --yes github:wanglixin-DLUT/paper-writing-skills install --dest ./agent-skills/paper-writing-skills
 ```
 
-支持的平台目录名来自 agentskill.sh 生态的常见约定：
+安装后，如果你的 agent 没有立刻发现新 skills，重启 Codex、Claude Code 或 Cursor。
 
-```text
-codex, claude-code, cursor, copilot, windsurf, gemini-cli,
-opencode, chatgpt, amp, goose, aider, cline, roo-code, trae
-```
+更新也很简单：重新运行同一条安装命令即可。同名 skill 会被新版本替换。
 
-本地开发时可以运行：
-
-```bash
-npm run validate
-npm run skills:list
-node scripts/install-skills.mjs install --platform codex --scope global --dry-run
-```
-
-如果你已经安装 agentskill.sh 的 `/learn` skill，可以用官方 CLI 管理外部 registry：
-
-```bash
-npx --yes @agentskill.sh/cli@latest setup
-```
-
-如果你想检查某个 skill 是否符合 TransSkill 的跨平台转换格式：
-
-```bash
-npx --yes transskill@latest validate deep-learning-content-analyzer
-npx --yes transskill@latest validate science-writing-foundations
-```
-
-### Clone Once
-
-先把 skills 仓库 clone 到本地：
-
-```bash
-git clone "$PAPER_WRITING_SKILLS_REPO" ~/paper-writing-skills
-cd ~/paper-writing-skills
-```
-
-后续更新：
-
-```bash
-cd ~/paper-writing-skills
-git pull
-```
-
-### Skill Directory List
-
-所有平台安装时都使用这 10 个目录。下面的安装命令默认你已经在 zsh/bash 中定义了这个数组。同名 skill 会被替换。
-
-```bash
-SKILLS=(
-  deep-learning-content-analyzer
-  science-writing-foundations
-  research-title-writer
-  research-abstract-writer
-  research-introduction-writer
-  research-methods-writer
-  research-results-writer
-  research-discussion-writer
-  research-conclusion-writer
-  research-writing-reviser
-)
-```
-
-## Install To Codex
-
-Codex 的本地 skill 安装路径是 `$CODEX_HOME/skills`，未设置 `CODEX_HOME` 时通常是 `~/.codex/skills`。这是原生全局安装方式，适合个人长期使用。
-
-### Codex Global Install
-
-```bash
-cd ~/paper-writing-skills
-
-SKILLS=(
-  deep-learning-content-analyzer
-  science-writing-foundations
-  research-title-writer
-  research-abstract-writer
-  research-introduction-writer
-  research-methods-writer
-  research-results-writer
-  research-discussion-writer
-  research-conclusion-writer
-  research-writing-reviser
-)
-
-DEST="${CODEX_HOME:-$HOME/.codex}/skills"
-mkdir -p "$DEST"
-
-for skill in "${SKILLS[@]}"; do
-  rm -rf "$DEST/$skill"
-  cp -R "$skill" "$DEST/$skill"
-done
-```
-
-安装后重启 Codex，让新 skills 被发现。
-
-### Codex Project-Scoped Use
-
-Codex 当前更适合用全局 skills。若希望某个论文项目固定使用这套写作系统，推荐把本仓库作为项目依赖纳入 git，并在项目级 `AGENTS.md` 中声明使用方式。
-
-```bash
-cd /path/to/your-paper-project
-git submodule add "$PAPER_WRITING_SKILLS_REPO" agent-skills/paper-writing-skills
-```
-
-创建或更新 `AGENTS.md`：
-
-```md
-# Paper Writing Workflow
-
-For scientific manuscript writing tasks, use the skills under:
-
-agent-skills/paper-writing-skills/
-
-Workflow:
-1. Use `deep-learning-content-analyzer` to create or update `content_analysis.md`.
-2. Use `science-writing-foundations` to create or update `writing_blueprint.md`.
-3. Use section-specific skills for title, abstract, introduction, methods, results, discussion, and conclusion.
-4. Use `research-writing-reviser` for pre-submission consistency and claim audit.
-```
-
-这种方式的优点是项目可复现、团队可共享；缺点是它依赖 agent 读取项目说明，不等同于 Codex 的全局 native skill install。
-
-## Install To Claude Code
-
-Claude Code 原生支持 personal skills 和 project skills。
-
-### Claude Code Global Install
-
-个人全局安装路径：
-
-```text
-~/.claude/skills/<skill-name>/SKILL.md
-```
-
-安装命令：
-
-```bash
-cd ~/paper-writing-skills
-
-SKILLS=(
-  deep-learning-content-analyzer
-  science-writing-foundations
-  research-title-writer
-  research-abstract-writer
-  research-introduction-writer
-  research-methods-writer
-  research-results-writer
-  research-discussion-writer
-  research-conclusion-writer
-  research-writing-reviser
-)
-
-DEST="$HOME/.claude/skills"
-mkdir -p "$DEST"
-
-for skill in "${SKILLS[@]}"; do
-  rm -rf "$DEST/$skill"
-  cp -R "$skill" "$DEST/$skill"
-done
-```
-
-重启 Claude Code 后生效。
-
-### Claude Code Project Install
-
-项目级安装路径：
-
-```text
-.claude/skills/<skill-name>/SKILL.md
-```
-
-方式 A：直接把 skills 复制进项目并提交到 git。
-
-```bash
-cd /path/to/your-paper-project
-mkdir -p .claude/skills
-
-TMP_SKILLS_DIR="$(mktemp -d)"
-git clone "$PAPER_WRITING_SKILLS_REPO" "$TMP_SKILLS_DIR/paper-writing-skills"
-
-SKILLS=(
-  deep-learning-content-analyzer
-  science-writing-foundations
-  research-title-writer
-  research-abstract-writer
-  research-introduction-writer
-  research-methods-writer
-  research-results-writer
-  research-discussion-writer
-  research-conclusion-writer
-  research-writing-reviser
-)
-
-for skill in "${SKILLS[@]}"; do
-  rm -rf ".claude/skills/$skill"
-  cp -R "$TMP_SKILLS_DIR/paper-writing-skills/$skill" ".claude/skills/$skill"
-done
-
-git add .claude/skills
-git commit -m "Add paper writing skills"
-```
-
-方式 B：如果项目还没有 `.claude/skills`，可以把整个仓库作为该目录的 submodule。
-
-```bash
-cd /path/to/your-paper-project
-mkdir -p .claude
-git submodule add "$PAPER_WRITING_SKILLS_REPO" .claude/skills
-git commit -m "Add paper writing skills submodule"
-```
-
-这种方式要求 `.claude/skills` 目录目前不存在或可以作为 submodule 管理。它的优点是更新简单：
-
-```bash
-cd /path/to/your-paper-project/.claude/skills
-git pull
-```
-
-## Use With Cursor
-
-Cursor 目前更适合通过 Rules 使用这套系统，而不是原生安装 `SKILL.md`。推荐用 Project Rules，因为它可以随项目进入 git。
-
-### Cursor Project Install
-
-把本仓库作为项目依赖：
-
-```bash
-cd /path/to/your-paper-project
-git submodule add "$PAPER_WRITING_SKILLS_REPO" agent-skills/paper-writing-skills
-mkdir -p .cursor/rules
-```
-
-创建 `.cursor/rules/paper-writing-skills.mdc`：
-
-```mdc
----
-description: Use the paper-writing-skills workflow for scientific manuscript writing, especially deep learning papers and manuscript sections.
-alwaysApply: false
----
-
-When the user asks for scientific manuscript writing, use the skill files under:
-
-@agent-skills/paper-writing-skills/deep-learning-content-analyzer/SKILL.md
-@agent-skills/paper-writing-skills/science-writing-foundations/SKILL.md
-@agent-skills/paper-writing-skills/research-title-writer/SKILL.md
-@agent-skills/paper-writing-skills/research-abstract-writer/SKILL.md
-@agent-skills/paper-writing-skills/research-introduction-writer/SKILL.md
-@agent-skills/paper-writing-skills/research-methods-writer/SKILL.md
-@agent-skills/paper-writing-skills/research-results-writer/SKILL.md
-@agent-skills/paper-writing-skills/research-discussion-writer/SKILL.md
-@agent-skills/paper-writing-skills/research-conclusion-writer/SKILL.md
-@agent-skills/paper-writing-skills/research-writing-reviser/SKILL.md
-
-Default workflow:
-1. Create or read `content_analysis.md`.
-2. Create or read `writing_blueprint.md`.
-3. Use the relevant section skill.
-4. Run `research-writing-reviser` before submission.
-
-Do not invent data, citations, baselines, or results. Mark missing evidence explicitly.
-```
-
-提交到项目：
-
-```bash
-git add .cursor/rules/paper-writing-skills.mdc .gitmodules agent-skills/paper-writing-skills
-git commit -m "Add paper writing skills workflow"
-```
-
-### Cursor Global Use
-
-Cursor 的 User Rules 是全局文本规则，不是 MDC 文件，也不会像 Claude Code 那样原生发现 `SKILL.md`。如果要全局使用，建议：
-
-1. 把本仓库 clone 到固定路径，例如 `~/paper-writing-skills`。
-2. 在 Cursor Settings -> Rules -> User Rules 中加入一段短规则。
-
-示例：
-
-```text
-For scientific manuscript writing tasks, use my local paper writing workflow in ~/paper-writing-skills. Prefer this order: deep-learning-content-analyzer, science-writing-foundations, section-specific writer, research-writing-reviser. Do not invent data, citations, or unsupported claims.
-```
-
-如果需要完整能力，仍然建议每个论文项目使用 Project Rule，并用 `@agent-skills/.../SKILL.md` 显式引用 skill 文件。
+本仓库使用标准 `skill-name/SKILL.md` 结构，也可以被 `agentskill.sh`、`transskill` 等 `SKILL.md` 生态工具识别。
 
 ## Full Manuscript Workflow
 
