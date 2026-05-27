@@ -267,16 +267,16 @@ terminology audit
 
 ## Installation Model
 
-本仓库目前没有写死远程地址。发布到 GitHub 后，把下面命令中的 `<repo-url>` 替换成真实仓库地址，例如：
+本仓库地址：
 
 ```bash
-export PAPER_WRITING_SKILLS_REPO="https://github.com/<owner>/paper-writing-skills.git"
+export PAPER_WRITING_SKILLS_REPO="https://github.com/wanglixin-DLUT/paper-writing-skills.git"
 ```
 
-也可以用 SSH：
+如果你的 GitHub 账户已经配置 SSH key，也可以使用 SSH 地址：
 
 ```bash
-export PAPER_WRITING_SKILLS_REPO="git@github.com:<owner>/paper-writing-skills.git"
+export PAPER_WRITING_SKILLS_REPO="git@github.com:wanglixin-DLUT/paper-writing-skills.git"
 ```
 
 ### Clone Once
