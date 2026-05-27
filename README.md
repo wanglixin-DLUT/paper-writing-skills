@@ -845,6 +845,19 @@ paper-writing-skills/
 
 ## Copyright And Boundaries
 
-这套 skills 是对科研写作方法的工程化抽象，不包含原书长段内容，也不复制目标论文正文。使用时应该总结结构、功能、写作模式和证据关系，不应搬运受版权保护的文本。
+这套 skills 的写作思想深受 Hilary Glasman-Deal 教授著作 *Science Research Writing* 的启发。原书对 STEMM 科研写作、非英语母语作者、reverse engineering 写作方法、IMRaD 章节结构、句子功能和写作工具做出了卓越贡献。本仓库只是把这些方法论进一步工程化为 agent 可调用的工作流；所有核心写作教育贡献应归功于原书作者和出版团队。
+
+强烈推荐所有看到这个仓库的人亲自阅读原书。读原书能获得本仓库无法替代的训练过程、例句分析、练习、FAQ、词汇和语法工具。
+
+购买入口：
+
+- 中文版：《英语科技写作（第二版）》，Hilary Glasman-Deal 著，世界图书出版公司，ISBN `9787523202876`
+  - 京东 ISBN 搜索：https://search.jd.com/Search?keyword=9787523202876
+  - 当当 ISBN 搜索：https://search.dangdang.com/?key=9787523202876
+- 英文版：*Science Research Writing: For Native and Non-Native Speakers of English (Second Edition)*, Hilary Glasman-Deal, World Scientific, DOI `10.1142/q0232`
+  - World Scientific 官方页面：https://www.worldscientific.com/worldscibooks/10.1142/q0232
+  - VitalSource eTextbook：https://www.vitalsource.com/products/science-research-writing-for-native-and-non-native-hilary-glasman-deal-v9781786348340
+
+这套 skills 是对科研写作方法的抽象和工程化，不包含原书长段内容，也不复制目标论文正文。使用时应该总结结构、功能、写作模式和证据关系，不应搬运受版权保护的文本。
 
 这套系统不会替你发明研究贡献。它的价值在于把事实、证据、写作策略和 claim 边界分开，让论文从技术事实出发，经过目标期刊叙事组织，最后形成可审查、可修改、可投稿的稿件。
