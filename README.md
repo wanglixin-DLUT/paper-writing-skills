@@ -279,6 +279,64 @@ export PAPER_WRITING_SKILLS_REPO="https://github.com/wanglixin-DLUT/paper-writin
 export PAPER_WRITING_SKILLS_REPO="git@github.com:wanglixin-DLUT/paper-writing-skills.git"
 ```
 
+### NPM / AgentSkill-Compatible Install
+
+本仓库同时兼容 `SKILL.md` open-standard 生态。`agentskill.sh` 和 `transskill` 这类 npm 工具都以 `skill-name/SKILL.md` 为核心格式；本仓库的 10 个 skill 目录已经按这个结构组织。
+
+注意：npm 上的 `openskill` 包不是 agent skill 框架，而是在线 skill ranking 算法库。本仓库选择兼容 `@agentskill.sh/cli` / `transskill` 这类实际面向 AI agent skills 的 npm 工具链。
+
+无需 clone，也可以用 GitHub + npx 直接安装：
+
+```bash
+npx --yes github:wanglixin-DLUT/paper-writing-skills list
+```
+
+安装到 Codex 全局 skill 目录：
+
+```bash
+npx --yes github:wanglixin-DLUT/paper-writing-skills install --platform codex --scope global
+```
+
+安装到当前项目的 Claude Code skill 目录：
+
+```bash
+npx --yes github:wanglixin-DLUT/paper-writing-skills install --platform claude-code --scope project
+```
+
+安装到自定义目录：
+
+```bash
+npx --yes github:wanglixin-DLUT/paper-writing-skills install --dest ./agent-skills/paper-writing-skills
+```
+
+支持的平台目录名来自 agentskill.sh 生态的常见约定：
+
+```text
+codex, claude-code, cursor, copilot, windsurf, gemini-cli,
+opencode, chatgpt, amp, goose, aider, cline, roo-code, trae
+```
+
+本地开发时可以运行：
+
+```bash
+npm run validate
+npm run skills:list
+node scripts/install-skills.mjs install --platform codex --scope global --dry-run
+```
+
+如果你已经安装 agentskill.sh 的 `/learn` skill，可以用官方 CLI 管理外部 registry：
+
+```bash
+npx --yes @agentskill.sh/cli@latest setup
+```
+
+如果你想检查某个 skill 是否符合 TransSkill 的跨平台转换格式：
+
+```bash
+npx --yes transskill@latest validate deep-learning-content-analyzer
+npx --yes transskill@latest validate science-writing-foundations
+```
+
 ### Clone Once
 
 先把 skills 仓库 clone 到本地：

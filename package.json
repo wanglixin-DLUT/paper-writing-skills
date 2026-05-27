@@ -1,0 +1,53 @@
+{
+  "name": "paper-writing-skills",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Agent skills for scientific manuscript writing, with npm/npx installation helpers for SKILL.md-compatible platforms.",
+  "type": "module",
+  "bin": {
+    "paper-writing-skills": "./scripts/install-skills.mjs",
+    "pws": "./scripts/install-skills.mjs"
+  },
+  "scripts": {
+    "validate": "node scripts/validate-agent-skills.mjs",
+    "skills:list": "node scripts/install-skills.mjs list",
+    "skills:install": "node scripts/install-skills.mjs install",
+    "validate:transskill:sample": "npx --yes transskill@latest validate deep-learning-content-analyzer && npx --yes transskill@latest validate science-writing-foundations",
+    "agentskill:setup": "npx --yes @agentskill.sh/cli@latest setup"
+  },
+  "keywords": [
+    "agent-skills",
+    "skill-md",
+    "agentskill",
+    "codex",
+    "claude-code",
+    "cursor",
+    "scientific-writing",
+    "research-writing",
+    "deep-learning"
+  ],
+  "author": "Wang Lixin",
+  "contributors": [
+    "Codex"
+  ],
+  "license": "SEE README.md",
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "README.md",
+    "package.json",
+    "scripts/install-skills.mjs",
+    "scripts/validate-agent-skills.mjs",
+    "deep-learning-content-analyzer/",
+    "science-writing-foundations/",
+    "research-title-writer/",
+    "research-abstract-writer/",
+    "research-introduction-writer/",
+    "research-methods-writer/",
+    "research-results-writer/",
+    "research-discussion-writer/",
+    "research-conclusion-writer/",
+    "research-writing-reviser/"
+  ]
+}
